@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>P1Harmony Card Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f7dce8;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #7d294d;
+    }
+
+    button {
+      padding: 15px 25px;
+      border: none;
+      border-radius: 15px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    #card {
+      margin: 30px auto;
+      padding: 40px;
+      max-width: 250px;
+      background: white;
+      border-radius: 20px;
+      font-size: 25px;
+      box-shadow: 0 5px 15px #aaa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🧩 P1Harmony Card Game 🧩</h1>
+
+  <p>Open a pack and get a random member!</p>
+
+  <button onclick="openPack()">OPEN PACK 🎁</button>
+
+  <div id="card">Your card will appear here!</div>
+
+  <script>
+    const members = [
+      "Keeho 🐯",
+      "Theo 🐺",
+      "Jiung 🐹",
+      "Intak 🐺",
+      "Soul 👽",
+      "Jongseob 🐥"
+    ];
+
+    function openPack() {
+      const randomMember =
+        members[Math.floor(Math.random() * members.length)];
+
+      document.getElementById("card").innerHTML =
+        "✨ You got:<br><br>" + randomMember + " ✨";
+    }
+  </script>
+
+</body>
+</html>
