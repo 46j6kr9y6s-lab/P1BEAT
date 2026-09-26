@@ -1,68 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>P1Harmony Card Game</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f7dce8;
-      padding: 30px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1BEAT 🎵</title>
 
-    h1 {
-      color: #7d294d;
-    }
+<style>
+body {
+  margin: 0;
+  background: #f7d6e5;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: #6d2141;
+}
 
-    button {
-      padding: 15px 25px;
-      border: none;
-      border-radius: 15px;
-      font-size: 18px;
-      cursor: pointer;
-    }
+h1 {
+  margin-top: 25px;
+  font-size: 38px;
+}
 
-    #card {
-      margin: 30px auto;
-      padding: 40px;
-      max-width: 250px;
-      background: white;
-      border-radius: 20px;
-      font-size: 25px;
-      box-shadow: 0 5px 15px #aaa;
-    }
-  </style>
+#game {
+  width: 320px;
+  height: 520px;
+  margin: 20px auto;
+  background: #fff5fa;
+  border: 4px solid #6d2141;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lane {
+  position: absolute;
+  bottom: 0;
+  width: 25%;
+  height: 100%;
+  border-right: 2px solid #e7a9c2;
+}
+
+.lane:nth-child(1) { left: 0; }
+.lane:nth-child(2) { left: 25%; }
+.lane:nth-child(3) { left: 50%; }
+.lane:nth-child(4) {
+  left: 75%;
+  border-right: none;
+}
+
+.note {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: #b52d65;
+  border-radius: 50%;
+  top: -60px;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hit {
+  width: 65px;
+  height: 55px;
+  border: none;
+  border-radius: 15px;
+  background: #8d2850;
+  color: white;
+  font-size: 20px;
+}
+
+#score {
+  font-size: 22px;
+  font-weight: bold;
+}
+</style>
 </head>
 
 <body>
 
-  <h1>🧩 P1Harmony Card Game 🧩</h1>
+<h1>🧩 P1BEAT 🎵</h1>
 
-  <p>Open a pack and get a random member!</p>
+<div id="score">
+  Score: <span id="points">0</span>
+  | Combo: <span id="combo">0</span>
+</div>
 
-  <button onclick="openPack()">OPEN PACK 🎁</button>
+<div id="game">
+  <div class="lane"></div>
+  <div class="lane"></div>
+  <div class="lane"></div>
+  <div class="lane"></div>
+</div>
 
-  <div id="card">Your card will appear here!</div>
+<div id="buttons">
+  <button class="hit" onclick="hit(0)">1</button>
+  <button class="hit" onclick="hit(1)">2</button>
+  <button class="hit" onclick="hit(2)">3</button>
+  <button class="hit" onclick="hit(3)">4</button>
+</div>
 
-  <script>
-    const members = [
-      "Keeho 🐯",
-      "Theo 🐺",
-      "Jiung 🐹",
-      "Intak 🐺",
-      "Soul 👽",
-      "Jongseob 🐥"
-    ];
+<script>
 
-    function openPack() {
-      const randomMember =
-        members[Math.floor(Math.random() * members.length)];
+let points = 0;
+let combo = 0;
 
-      document.getElementById("card").innerHTML =
-        "✨ You got:<br><br>" + randomMember + " ✨";
+function createNote() {
+
+  const note = document.createElement("div");
+  note.className = "note";
+
+  const lane = Math.floor(Math.random() * 4);
+
+  note.style.left = (lane * 25 + 5) + "%";
+
+  document.getElementById("game").appendChild(note);
+
+  let position = -60;
+
+  const fall = setInterval(() => {
+
+    position += 5;
+    note.style.top = position + "px";
+
+    if (position > 520) {
+      clearInterval(fall);
+      note.remove();
+      combo = 0;
+      document.getElementById("combo").textContent = combo;
     }
-  </script>
+
+  }, 30);
+
+  note.dataset.lane = lane;
+}
+
+function hit(lane) {
+
+  const notes = document.querySelectorAll(".note");
+
+  for (let note of notes) {
+
+    if (
+      Number(note.dataset.lane) === lane &&
+      parseInt(note.style.top) > 400
+    ) {
+
+      note.remove();
+
+      points += 100;
+      combo++;
+
+      document.getElementById("points").textContent = points;
+      document.getElementById("combo").textContent = combo;
+
+      return;
+    }
+  }
+
+  combo = 0;
+  document.getElementById("combo").textContent = combo;
+}
+
+setInterval(createNote, 900);
+
+</script>
 
 </body>
 </html>
